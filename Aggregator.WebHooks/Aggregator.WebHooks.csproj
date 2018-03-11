@@ -100,6 +100,10 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\PrAnnotatorControllerBase.cs" />
+    <Compile Include="Controllers\ReleaseController.cs" />
+    <Compile Include="Controllers\BuildController.cs" />
+    <Compile Include="Controllers\PullRequestController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
     <Compile Include="BasicAuthentication\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="BasicAuthentication\AuthenticationFailureResult.cs" />
@@ -139,6 +143,10 @@
     <ProjectReference Include="..\Aggregator.Core\Aggregator.Core.csproj">
       <Project>{fea76835-61b3-4fc7-9d6f-50d39a7a8258}</Project>
       <Name>Aggregator.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PrAnnotator.Core\PrAnnotator.Core\PrAnnotator.Core.csproj">
+      <Project>{0FB6CFFB-CCDA-4CE2-8184-D0E540FADC5B}</Project>
+      <Name>PrAnnotator.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
