@@ -34,7 +34,7 @@ namespace PrAnnotator.Core
             var id = iterations.Last()?.Id;
             if (id != null)
             {
-                prStatus.Description = $"{id.Value}: {prStatus.Description}";
+                prStatus.Description = $"Update {id.Value}: {prStatus.Description}";
                 await gitClient.CreatePullRequestIterationStatusAsync(prStatus, pr.Repository.Id, pr.PullRequestId, id.Value);
             }
         }
