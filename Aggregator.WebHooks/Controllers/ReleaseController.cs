@@ -30,11 +30,5 @@ namespace Aggregator.WebHooks.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
-
-        private void Log(string message)
-        {
-            Trace.WriteLine(message);
-            EventLog.WriteEntry("TFSAggregator", message, EventLogEntryType.Warning, 42);
-        }
     }
 }

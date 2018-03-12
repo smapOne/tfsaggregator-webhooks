@@ -29,11 +29,12 @@ namespace PrAnnotator.Core
                 Context = new GitStatusContext {Genre = "continous-integration", Name = "PrAnnotator"}
             };
 
-            var status = await gitClient.CreatePullRequestStatusAsync(prStatus, prRequest.TeamProject, pr.Repository.Id, pr.PullRequestId).ConfigureAwait(false);
+            //var status = await gitClient.CreatePullRequestStatusAsync(prStatus, prRequest.TeamProject, pr.Repository.Id, pr.PullRequestId).ConfigureAwait(false);
+
             var id = iterations.Last()?.Id;
             if (id != null)
             {
-                prStatus.Description = prStatus.Description + "Iteration: " + id.Value;
+                prStatus.Description = $"{id.Value}: {prStatus.Description}";
                 await gitClient.CreatePullRequestIterationStatusAsync(prStatus, pr.Repository.Id, pr.PullRequestId, id.Value);
             }
         }

@@ -32,8 +32,6 @@ namespace PrAnnotator.Core.Models
 
         public string Environment { get; set; }
 
-        public string ReleaseName { get; set; }
-
         private ReleaseRequest()
         {
             this.Error = string.Empty;
@@ -71,20 +69,24 @@ namespace PrAnnotator.Core.Models
                     }
                 }
 
-                string fullUrl = (string)payload["resource"]["url"];
-                result.TfsCollectionUri = fullUrl.Substring(0, fullUrl.IndexOf("_apis", StringComparison.Ordinal));
+                result.TfsCollectionUri = (string)payload["resourceContainers"]["project"]["baseUrl"];
 
                 switch (result.EventType)
                 {
                     case "ms.vss-release.deployment-started-event":
-                    case "ms.vss-release.deployment-completed-event":
                         result.Environment = (string) payload["resource"]["environment"]["name"];
                         result.Status = (string) payload["resource"]["environment"]["status"];
                         result.ReleaseId = (int)payload["resource"]["release"]["id"];
                         result.ReleaseUri = (string) payload["resource"]["release"]["url"];
-                        result.ReleaseName = (string)payload["resource"]["release"]["name"];
-                        result.TeamProject = (string) payload["project"]["name"];
-                break;
+                        result.TeamProject = (string) payload["resource"]["project"]["name"];
+                        break;
+                    case "ms.vss-release.deployment-completed-event":
+                        result.Environment = (string)payload["resource"]["environment"]["name"];
+                        result.Status = (string)payload["resource"]["environment"]["status"];
+                        result.ReleaseId = (int)payload["resource"]["environment"]["releaseId"];
+                        result.ReleaseUri = (string)payload["resource"]["deployment"]["release"]["webAccessUri"];
+                        result.TeamProject = (string)payload["resource"]["project"]["name"];
+                        break;
                     default:
                         result.Error = $"Unsupported eventType {result.EventType}";
                         break;

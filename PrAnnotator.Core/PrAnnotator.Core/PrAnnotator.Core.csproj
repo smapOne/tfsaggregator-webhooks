@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReleaseRequestCreatedHandler.cs" />
+    <Compile Include="ReleaseRequestHandler.cs" />
     <Compile Include="BuildRequestHandler.cs" />
     <Compile Include="Models\ReleaseRequest.cs" />
     <Compile Include="Models\IPrAnnotatorModel.cs" />

@@ -19,8 +19,6 @@ namespace PrAnnotator.Core.Models
         public string CollectionId { get; private set; }
         public string TfsCollectionUri { get; private set; }
 
-        public string SourceRefName { get; set; }
-
         public string Status { get; set; }
 
 

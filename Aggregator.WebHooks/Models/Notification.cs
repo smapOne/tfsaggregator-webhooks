@@ -1,8 +1,4 @@
 ﻿using Aggregator.Core.Interfaces;
-using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.Server;
-using System;
-using System.Linq;
 
 namespace Aggregator.Models
 {

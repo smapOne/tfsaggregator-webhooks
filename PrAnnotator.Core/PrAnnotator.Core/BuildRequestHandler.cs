@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Aggregator.Core.Configuration;
-using Aggregator.Core.Facade;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -14,7 +12,7 @@ namespace PrAnnotator.Core
     {
         public async Task HandleBuild(BuildRequest build, string pat, Uri projectCollectionUri)
         {
-            if (string.IsNullOrEmpty(build.SourceRefName))
+            if (string.IsNullOrEmpty(build.SourceBranch))
             {
                 return;
             }
@@ -25,7 +23,7 @@ namespace PrAnnotator.Core
             var gitClient = connection.GetClient<GitHttpClient>();
 
             var prs = await gitClient.GetPullRequestsAsync(build.TeamProject, build.RepositoryId,
-                new GitPullRequestSearchCriteria {SourceRefName = build.SourceRefName, Status = PullRequestStatus.Active});
+                new GitPullRequestSearchCriteria {SourceRefName = build.SourceBranch, Status = PullRequestStatus.Active});
 
             foreach (var pr in prs)
             {
@@ -37,23 +35,21 @@ namespace PrAnnotator.Core
                     await gitClient.DeletePullRequestStatusAsync(build.TeamProject, build.RepositoryId, pr.PullRequestId, oldstatus.Id);
                 }
 
-                await gitClient.DeletePullRequestStatusAsync(build.TeamProject, build.RepositoryId, pr.PullRequestId, 0);
-
                 var prStatus = new GitPullRequestStatus
                 {
-                    State = build.Status == "succeded" ? GitStatusState.Pending : GitStatusState.Failed,
+                    State = build.Status == "completed" ? GitStatusState.Succeeded : GitStatusState.Failed,
                     Description = $"{build.DefinitionName}: Build {build.Status}",
                     Context = new GitStatusContext {Genre = "Build", Name = build.DefinitionName},
                     TargetUrl = build.BuildUri
                 };
 
-                await gitClient.CreatePullRequestStatusAsync(prStatus, build.TeamProject, pr.Repository.Id, pr.PullRequestId).ConfigureAwait(false);
+                //await gitClient.CreatePullRequestStatusAsync(prStatus, build.TeamProject, pr.Repository.Id, pr.PullRequestId).ConfigureAwait(false);
 
                 var iterations = await gitClient.GetPullRequestIterationsAsync(pr.Repository.Id, pr.PullRequestId);
-                var id = iterations.Last()?.Id;
+                var id = iterations.Last(i => i.SourceRefCommit.CommitId == build.SourceVersion).Id;
                 if (id != null)
                 {
-                    prStatus.Description = prStatus.Description + " Iteration: " + id.Value;
+                    prStatus.Description = $"{id.Value}: {prStatus.Description}";
                     await gitClient.CreatePullRequestIterationStatusAsync(prStatus, pr.Repository.Id, pr.PullRequestId, id.Value);
                 }
             }

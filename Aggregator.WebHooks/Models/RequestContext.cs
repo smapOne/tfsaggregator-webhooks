@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Linq;
-
-using Aggregator.Core;
-using Aggregator.Core.Facade;
 using Aggregator.Core.Interfaces;
-
-using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
-using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.Framework.Server;
-using Microsoft.TeamFoundation.Server;
-using Microsoft.TeamFoundation.Server.Core;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Aggregator.Models
 {
