@@ -10,7 +10,8 @@ namespace Aggregator.Core.Configuration
     using System.Xml.Linq;
     using System.Xml.Schema;
 
-#pragma warning disable S101 // Types should be named in camel case
+    // Types should be named in camel case
+#pragma warning disable S101
     /// <summary>
     /// This class represents Core settings as properties
     /// </summary>

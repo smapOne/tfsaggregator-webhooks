@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
-
-using Aggregator.Core.Configuration;
-using Aggregator.Core.Facade;
-using Aggregator.Core.Extensions;
-using Aggregator.Core.Interfaces;
-using Aggregator.Core.Monitoring;
-
-namespace Aggregator.Core.Context
+﻿namespace Aggregator.Core.Context
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Caching;
+    using Aggregator.Core.Configuration;
+    using Aggregator.Core.Extensions;
+    using Aggregator.Core.Facade;
+    using Aggregator.Core.Interfaces;
+    using Aggregator.Core.Monitoring;
+
     /// <summary>
     /// Manages the global inter-call status
     /// </summary>
