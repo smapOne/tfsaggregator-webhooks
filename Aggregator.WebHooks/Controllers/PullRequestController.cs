@@ -11,7 +11,6 @@ namespace Aggregator.WebHooks.Controllers
 {
     public class PullRequestController : PrAnnotatorControllerBase
     {
-	    [IdentityBasicAuthentication] // Enable authentication via an ASP.NET Identity user name and password
 	    [Authorize] // Require some form of authentication
         public async Task<HttpResponseMessage> Post([FromBody]JObject payload)
         {

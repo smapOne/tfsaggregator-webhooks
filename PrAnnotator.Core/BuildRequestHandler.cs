@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.TeamFoundation.SourceControl.WebApi;
-using Microsoft.VisualStudio.Services.Common;
-using Microsoft.VisualStudio.Services.WebApi;
-using PrAnnotator.Core.Models;
-
-namespace PrAnnotator.Core
+﻿namespace PrAnnotator.Core
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.TeamFoundation.SourceControl.WebApi;
+    using Microsoft.VisualStudio.Services.Common;
+    using Microsoft.VisualStudio.Services.WebApi;
+    using PrAnnotator.Core.Models;
+
     public class BuildRequestHandler
     {
         public async Task HandleBuild(BuildRequest build, string pat, Uri projectCollectionUri)

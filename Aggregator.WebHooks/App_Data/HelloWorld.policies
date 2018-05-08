@@ -9,14 +9,114 @@
     <authentication username="**DOMAIN**\**user**" password="***" />
     <authentication personalToken="**put-personal-token-here**" />
     -->
+    <authentication personalToken="" />
   </runtime>
 
-  <rule name="HelloWorldRule" hasFields="Title"><![CDATA[
-        logger.Log("Hello '{2}', World from {1} #{0}!", self.Id, self.TypeName, self["System.Title"]);
-  ]]></rule>
+ <rule name="DebugRule" hasFields="Title"><![CDATA[
+        foreach (var f in self.Fields) {
+            logger.Log("{0} #{1} has {2} field with value {3}", self.TypeName, self.Id, f.Name, f.Value);
+        }
+        logger.Log("Hello '{2}', World from {1} #{0}! state:{3}", self.Id, self.TypeName, self["System.Title"], self["System.State"]);
+   ]]>
+  </rule>
 
+  <rule name="AutoOpen" appliesTo="Task">
+        <!-- Update Work Item to Committed if a task became "active" -->
+        <![CDATA[
+
+    if (new[] {"Active", "In Progress", "To Do"}.Contains((string)self["System.State"]))
+    {
+        if(self.HasParent() && ((string)self.Parent["System.State"]) == "New")
+        {
+            var assignee = (string) self.Parent["Assigned To"];
+            self.Parent.TransitionToState("Active", "Auto Activated");
+            self.Parent["Assigned To"] = assignee;
+        }
+    }
+
+    ]]>
+
+  </rule>
+
+    <rule name="AutoReOpen" appliesTo="Task">
+        <!-- Update Work Item to Committed if a task became again "active" -->
+        <![CDATA[
+
+    if (new[] {"Active", "In Progress", "New"}.Contains((string)self["System.State"]))
+    {
+        if(self.HasParent() && ((string)self.Parent["System.State"]) == "Resolved")
+        {
+            var assignee = (string) self.Parent["Assigned To"];
+            self.Parent.TransitionToState("Active", "Auto ReActivated");
+            self.Parent["Assigned To"] = assignee;
+        }
+    }
+
+    ]]>
+
+  </rule>
+
+  <rule name="AutoClose" appliesTo="Task">
+        <!-- Update Work Item to Resovled if a all child tasks are Closed or Removed -->
+        <![CDATA[
+    if ((string)self["System.State"] == "Closed" && self.HasParent() && ((string)self.Parent["System.State"]) != "Closed" && ((string)self.Parent["System.State"]) != "Resolved")
+    {
+        if (self.Parent.Children.All(child => new[] {"Removed", "Closed"}.Contains((string)child["System.State"])))
+        {
+            var assignee = (string) self.Parent["Assigned To"];
+            self.Parent.TransitionToState("Resolved", "Auto Resolved");
+            self.Parent["Assigned To"] = assignee;
+        }
+    }
+    ]]>
+
+  </rule>
+  <rule name="UserPain" appliesTo="Bug">
+        <![CDATA[
+
+    var likelyhoodStr = (string)self["Bug Likelihood"];
+    var priorityStr = (string)self["Bug Priority"];
+    var typeStr = (string)self["Bug Type"];
+
+    var likelyhood = 0;
+    var priority = 0;
+    var bugtype = 0;
+
+    bool haslikelihood = false;
+    bool haspriotity = false;
+    bool hasbugtype = false;
+
+    if (!string.IsNullOrEmpty(likelyhoodStr)){
+        var sub = likelyhoodStr.Substring(0,1);
+        likelyhood = int.Parse(sub);
+        haslikelihood = true;
+    }
+
+    if (!string.IsNullOrEmpty(priorityStr)){
+        priority = int.Parse(priorityStr.Substring(0,1));
+        haspriotity = true;
+    }
+
+    if (!string.IsNullOrEmpty(typeStr)){
+        bugtype = int.Parse(typeStr.Substring(0,1));
+        hasbugtype = true;
+    }
+
+    if (haslikelihood && haspriotity && hasbugtype){
+        var userpain = likelyhood * priority * bugtype * 1.0 / ( 6 * 5 * 4);
+        self["User Pain"] = userpain;
+        logger.Log("Bugvalues l: {0} p: {1} b: {2} -> Userpain of {3}", likelyhood, priority, bugtype, userpain);
+    } else {
+        logger.Log("Bugvalues incomplete");
+    }
+    ]]>
+
+  </rule>
   <policy name="AlwaysRunPolicy">
-    <ruleRef name="HelloWorldRule" />
+        <!--<ruleRef name="DebugRule" />-->
+        <ruleRef name="AutoOpen" />
+        <ruleRef name="AutoReOpen" />
+        <ruleRef name="AutoClose" />
+        <ruleRef name="UserPain" />
   </policy>
-
 </AggregatorConfiguration>
