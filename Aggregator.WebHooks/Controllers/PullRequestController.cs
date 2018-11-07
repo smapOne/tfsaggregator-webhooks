@@ -1,17 +1,16 @@
-﻿using BasicAuthentication.Filters;
-using Newtonsoft.Json.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using PrAnnotator.Core;
-using PrAnnotator.Core.Models;
-
-namespace Aggregator.WebHooks.Controllers
+﻿namespace Aggregator.WebHooks.Controllers
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using Newtonsoft.Json.Linq;
+    using PrAnnotator.Core;
+    using PrAnnotator.Core.Models;
+
     public class PullRequestController : PrAnnotatorControllerBase
     {
-	    [Authorize] // Require some form of authentication
+        [Authorize] // Require some form of authentication
         public async Task<HttpResponseMessage> Post([FromBody]JObject payload)
         {
             var request = PullRequest.Parse(payload);

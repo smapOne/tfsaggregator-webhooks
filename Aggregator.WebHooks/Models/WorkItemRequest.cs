@@ -98,6 +98,7 @@ namespace Aggregator.WebHooks.Models
                     result.TfsCollectionUri = (string)payload["resourceContainers"]["collection"]["baseUrl"];
                     result.ProjectId = (string)payload["resourceContainers"]["project"]["id"];
                     result.TeamProjectUri = (string)payload["resourceContainers"]["project"]["baseUrl"];
+
                     // not always true...
                     result.WorkItemId = (int)payload["resource"]["id"];
 
@@ -119,6 +120,7 @@ namespace Aggregator.WebHooks.Models
                             {
                                 result.Error = $"TFS Aggregator requires 'All' for 'Resource details to send'.";
                             }
+
                             break;
                         case "workitem.updated":
                             result.ChangeType = Core.Interfaces.ChangeTypes.Change;
@@ -132,6 +134,7 @@ namespace Aggregator.WebHooks.Models
                             {
                                 result.Error = $"TFS Aggregator requires 'All' for 'Resource details to send'.";
                             }
+
                             break;
                         case "workitem.restored":
                             result.ChangeType = Core.Interfaces.ChangeTypes.Restore;
@@ -144,6 +147,7 @@ namespace Aggregator.WebHooks.Models
                             {
                                 result.Error = $"TFS Aggregator requires 'All' for 'Resource details to send'.";
                             }
+
                             break;
                         case "workitem.deleted":
                             result.ChangeType = Core.Interfaces.ChangeTypes.Delete;
@@ -156,13 +160,14 @@ namespace Aggregator.WebHooks.Models
                             {
                                 result.Error = $"TFS Aggregator requires 'All' for 'Resource details to send'.";
                             }
+
                             break;
+
                         //TODO case "workitem.comment":
                         default:
                             result.Error = $"Unsupported eventType {result.EventType}";
                             break;
                     }//switch
-
                 }//if
             }
             catch (Exception e)

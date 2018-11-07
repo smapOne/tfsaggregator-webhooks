@@ -23,12 +23,13 @@ namespace Aggregator.WebHooks.Controllers
         protected RuntimeContext GetRuntimeContext(IPrAnnotatorModel request)
         {
             string policyFilePath = System.Configuration.ConfigurationManager.AppSettings["policyFilePath"];
+
             // macro expansion to permit multi-tenants
             string policyFile = policyFilePath.WithVar(request);
 
             // cache requires absolute path
             policyFile = System.Web.Hosting.HostingEnvironment.MapPath(policyFile);
-            Debug.Assert(System.IO.File.Exists(policyFile));
+            Debug.Assert(System.IO.File.Exists(policyFile), $"{policyFile} exists");
 
             // need a logger to show errors in config file (Catch 22)
             var logger = new AspNetEventLogger(request.EventId, LogLevel.Normal);
@@ -45,6 +46,7 @@ namespace Aggregator.WebHooks.Controllers
                 this.Log(runtime.Errors.Current);
                 return runtime;
             }
+
             return runtime;
         }
 

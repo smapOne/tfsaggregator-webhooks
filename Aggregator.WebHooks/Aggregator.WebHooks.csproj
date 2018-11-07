@@ -70,25 +70,25 @@
     <!-- packages -->
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.6" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.6" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.6" />
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
       <Version>1.0.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Logging">
-      <Version>5.2.2</Version>
+      <Version>5.3.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens">
-      <Version>5.2.2</Version>
+      <Version>5.3.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt">
-      <Version>5.2.2</Version>
+      <Version>5.3.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
@@ -134,7 +134,9 @@
     <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="apiapp.json" />
     <None Include="app.config" />
     <Content Include="App_Data\HelloWorld.policies">
@@ -179,17 +181,15 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!--
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.132.0-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.132.0-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.16.141.1-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TeamFoundationServer.ExtendedClient.16.141.1-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets'))" />
   </Target>
-  -->
-  <Import Project="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.132.0-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets" Condition="Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.132.0-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" />
+  <Import Project="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.16.141.1-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets" Condition="Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.16.141.1-preview\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

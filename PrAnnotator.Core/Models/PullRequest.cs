@@ -66,8 +66,9 @@ namespace PrAnnotator.Core.Models
                     }
                 }
 
-                string fullUrl = (string)payload["resource"]["url"];
-                result.TfsCollectionUri = fullUrl.Substring(0, fullUrl.IndexOf("_apis", StringComparison.Ordinal));
+                //string fullUrl = (string)payload["resource"]["url"];
+                //fullUrl.Substring(0, fullUrl.IndexOf("_apis", StringComparison.Ordinal));
+                result.TfsCollectionUri = result.TfsCollectionUri = (string)payload["resourceContainers"]["project"]["baseUrl"];
 
                 switch (result.EventType)
                 {
